@@ -1,0 +1,97 @@
+  Dim obj As New GcpBELinhaDocumentoVenda
+      Dim SQL As String
+    Dim objLista As StdBELista
+
+    Dim encomenda_lst() As String
+    Dim encomendaItem_lst() As String
+    
+
+
+
+
+
+
+
+Private Sub lstEncomenda_Click()
+
+    Dim enc As String
+    'procurar pela linha selecionada
+    For x = 0 To lstEncomenda.ListCount - 1
+        If lstEncomenda.Selected(x) = True Then
+            Me.lstEncomendaItem.Clear
+            enc = lstEncomenda.List(x, 0)
+            preencher_encomendaItem (enc)
+            
+            End If
+    Next x
+    
+End Sub
+
+
+Private Sub UserForm_Activate()
+
+
+          SQL = "select cli.nome, enc.*   from TDU_primobEncomenda as enc, Clientes as cli where enc.CDU_cliente = cli.Cliente"
+        Set objLista = Aplicacao.BSO.Consulta(SQL)
+        Dim i As Integer
+        Dim valor, estado, data, enc, nome As String
+            
+       
+       i = 0
+    
+    If Not (objLista Is Nothing) Then
+        While Not (objLista.NoInicio Or objLista.NoFim)    'existe registo
+        
+            
+            enc = objLista("CDU_encomenda")
+            nome = objLista("nome")
+            data = objLista("CDU_data_hora")
+            valor = objLista("CDU_valor")
+            estado = objLista("CDU_estado")
+            
+           Me.lstEncomenda.AddItem (enc)
+           
+           Me.lstEncomenda.List(i, 1) = nome
+           Me.lstEncomenda.List(i, 2) = valor
+           Me.lstEncomenda.List(i, 3) = data
+           Me.lstEncomenda.List(i, 4) = estado
+            
+            i = i + 1
+
+
+             objLista.Seguinte
+             
+        Wend
+    End If
+End Sub
+
+Private Sub preencher_encomendaItem(encomenda As String)
+              SQL = "select a.Descricao, item.* from TDU_primobItemEncomenda as item, Artigo as a  where CDU_encomenda = '" + encomenda + "' and item.CDU_artigo = a.Artigo"
+        Set objLista = Aplicacao.BSO.Consulta(SQL)
+        Dim i As Integer
+        Dim valor, estado, data, enc As String
+            
+       
+       i = 0
+    
+    If Not (objLista Is Nothing) Then
+        While Not (objLista.NoInicio Or objLista.NoFim)    'existe registo
+        
+            artigo = objLista("CDU_artigo")
+            Descricao = objLista("Descricao")
+            quantidade = objLista("CDU_quantidade")
+           
+           Me.lstEncomendaItem.AddItem (artigo)
+           Me.lstEncomendaItem.List(i, 1) = Descricao
+           Me.lstEncomendaItem.List(i, 2) = quantidade
+            
+            i = i + 1
+
+
+             objLista.Seguinte
+             
+        Wend
+    End If
+End Sub
+
+

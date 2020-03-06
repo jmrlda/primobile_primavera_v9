@@ -1,0 +1,12 @@
+
+'Class encomenda
+
+
+Public id As String
+Public vendedor As String
+Public cliente As String
+Public data As String
+Public valorTotal As Double
+Public estado As String
+Public documento As String
+

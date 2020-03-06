@@ -1,0 +1,11 @@
+
+'Class EncomendaItem
+
+Public id As String
+Public artigo As String
+Public quantidade As Double
+Public subtotal As String
+Public valorTotal As Double
+
+
+
